@@ -5,47 +5,33 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
-	"time"
 
 	"github.com/hsraktu17/bot/internal/groq"
 	"github.com/joho/godotenv"
 )
 
-type ChatEntry struct {
-	UserInput string `json:"user_input"`
-	Response  string `json:"response"`
-	TimeStamp string `json:"timestamp"`
-}
-
-func init() {
+func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading the .env file")
+		log.Fatal("error loading .env file")
 	}
-}
 
-func main() {
-	fmt.Println("Hellof")
-
-	reader := bufio.NewReader(os.Stdin)
-	apiKey := os.Getenv("GROQ_API_KEY")
-	fmt.Println("Hellof the envs is here:", apiKey)
-	var input string
-	input, _ = reader.ReadString('\n')
-	input = strings.TrimSpace(input)
-
-	reply, err := groq.GetPositiveResponse(input)
-	fmt.Println(reply, err)
+	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
-		var input string
-		fmt.Print("You: ")
-		input, _ = reader.ReadString('\n')
-		input = strings.TrimSpace(input)
+		fmt.Print("\nYou: ")
+		scanned := scanner.Scan()
+		if !scanned {
+			break
+		}
 
-		response := input
-		fmt.Println("bot response: ", response)
-		fmt.Println("Timestamp:", time.Now().Format("2006-01-02 15:04:05"))
+		userInput := scanner.Text()
+		reply, err := groq.GetPositiveResponse(userInput)
+
+		if err != nil {
+			fmt.Println("Error", err)
+		}
+
+		fmt.Println(reply)
 	}
 }
