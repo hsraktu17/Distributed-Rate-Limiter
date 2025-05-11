@@ -15,6 +15,7 @@ func main() {
 	if err != nil {
 		log.Fatal("error loading .env file")
 	}
+	fmt.Println("Type anything — I’ll respond with something uplifting. 💬")
 
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -29,9 +30,11 @@ func main() {
 		reply, err := groq.GetPositiveResponse(userInput)
 
 		if err != nil {
-			fmt.Println("Error", err)
+			fmt.Println("Bot: (there is some bot error)")
+			fmt.Println("Groq Error", err)
+			continue
 		}
 
-		fmt.Println(reply)
+		fmt.Println("Bot: ", reply)
 	}
 }

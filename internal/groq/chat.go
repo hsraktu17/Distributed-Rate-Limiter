@@ -15,7 +15,7 @@ func GetPositiveResponse(userInput string) (string, error) {
 	reqBody := map[string]any{
 		"model": "llama3-70b-8192", // or "mixtral-8x7b-32768"
 		"messages": []map[string]string{
-			{"role": "system", "content": "You are a kind uplifting chatbot. Always respond with something positive. The user is going through ups and downs in life."},
+			{"role": "system", "content": "You are a kind uplifting chatbot. Always respond with something positive. The user is going through ups and downs in life. Reply normally until the user tell you his problem and after that you have to work like his therapiest... Reply in mockery way"},
 			{"role": "user", "content": userInput},
 		},
 	}
