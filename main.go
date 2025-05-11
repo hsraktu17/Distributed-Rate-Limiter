@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hsraktu17/bot/internal/groq"
 	"github.com/joho/godotenv"
 )
 
@@ -30,6 +31,12 @@ func main() {
 	reader := bufio.NewReader(os.Stdin)
 	apiKey := os.Getenv("GROQ_API_KEY")
 	fmt.Println("Hellof the envs is here:", apiKey)
+	var input string
+	input, _ = reader.ReadString('\n')
+	input = strings.TrimSpace(input)
+
+	reply, err := groq.GetPositiveResponse(input)
+	fmt.Println(reply, err)
 
 	for {
 		var input string
