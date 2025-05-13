@@ -17,6 +17,20 @@ func readPromptFile() string {
 	return string(content)
 }
 
+func writePromptFile(content string) error {
+	file, err := os.OpenFile(filepath.Join("internal", "groq", "prompt.txt"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+
+	defer file.Close()
+
+	if _, err := file.WriteString(content + "\n"); err != nil {
+		return err
+	}
+	return nil
+}
+
 func GetPositiveResponse(userInput string) (string, error) {
 	apiKey := os.Getenv("GROQ_API_KEY")
 	url := "https://api.groq.com/openai/v1/chat/completions"
@@ -48,5 +62,6 @@ func GetPositiveResponse(userInput string) (string, error) {
 	json.Unmarshal(respBody, &parsed)
 
 	reply := parsed["choices"].([]interface{})[0].(map[string]interface{})["message"].(map[string]interface{})["content"].(string)
+	writePromptFile(reply)
 	return reply, nil
 }
