@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/hsraktu17/bot/internal/groq"
 	"github.com/hsraktu17/bot/internal/zapier"
 	"github.com/joho/godotenv"
 )
@@ -28,8 +29,8 @@ func main() {
 		}
 
 		userInput := scanner.Text()
-		// reply, err := groq.GetPositiveResponse(userInput)
-		reply := "hello"
+		reply, err := groq.GetPositiveResponse(userInput)
+		// reply := "hello"
 
 		if err != nil {
 			fmt.Println("Bot: (there is some bot error)")

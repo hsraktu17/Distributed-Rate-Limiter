@@ -3,7 +3,6 @@ package groq
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -22,7 +21,7 @@ func GetPositiveResponse(userInput string) (string, error) {
 	apiKey := os.Getenv("GROQ_API_KEY")
 	url := "https://api.groq.com/openai/v1/chat/completions"
 
-	fmt.Println("response: ", readPromptFile())
+	// fmt.Println("response: ", readPromptFile())
 
 	reqBody := map[string]any{
 		"model": "llama3-70b-8192", // or "mixtral-8x7b-32768"
