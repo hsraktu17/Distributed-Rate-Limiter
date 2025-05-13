@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/hsraktu17/bot/zapier"
+	"github.com/hsraktu17/bot/internal/zapier"
 	"github.com/joho/godotenv"
 )
 
