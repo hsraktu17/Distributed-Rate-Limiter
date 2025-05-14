@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rate-limiter
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
