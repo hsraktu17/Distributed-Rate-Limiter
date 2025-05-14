@@ -4,15 +4,12 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/hsraktu17/Distributed-Rate-Limiter/internal/api"
 )
 
 func main() {
 	r := gin.Default()
-	r.GET("/api/check", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "ok",
-		})
-	})
+	r.GET("/api/check", api.RateLimitHandle)
 
 	log.Println("Server is running on port 8080")
 	if err := r.Run(":8080"); err != nil {
