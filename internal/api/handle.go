@@ -24,7 +24,7 @@ func RateLimitHandle(c *gin.Context) {
 	l, exists := limiterMap[userID]
 	if !exists {
 		// Create a new limiter for the user: 5 req/sec, burst of 10
-		l = limiter.NewLimiter(1, 2)
+		l = limiter.NewLimiter(5, 10)
 		limiterMap[userID] = l
 	}
 	mu.Unlock()
