@@ -1,35 +1,132 @@
-# ⚡ Go Rate Limiter (Token Bucket Algorithm)
+# ⚡ Distributed Rate Limiter (Token Bucket) – Golang
 
-A lightweight, production-minded **Token Bucket Rate Limiter** built in **Golang** using the Gin framework.
+A high-performance, customizable **Token Bucket Rate Limiter** built in Go using the Gin framework. Perfect for protecting APIs from abuse and enforcing fair usage policies.
 
-Use it to protect your API from abuse, apply fair-usage policies, or build a gateway-like access layer — one token at a time.
+This project is built with clean code principles, structured modules, and concurrency-safe logic. Future plans include a Redis backend and cluster-aware support.
 
 ---
 
 ## 🚀 Features
 
-- ⚙️ Token Bucket algorithm (burst + refill)
-- 👤 Per-user in-memory tracking
-- 💡 Customizable rate & burst limits
-- 🔐 Thread-safe using `sync.Mutex`
-- 🧪 Simple HTTP API to test behavior
+* 🔄 Token Bucket algorithm: allows bursts + controlled refill
+* 👤 Per-user rate limiting (via `user_id`)
+* ⚙️ Configurable rate (tokens/sec) and burst size
+* 🧵 Thread-safe (uses `sync.Mutex`)
+* 🌐 HTTP API built with Gin
+* 🧼 Clean folder structure, easy to extend
 
 ---
 
 ## 🧠 How It Works
 
-- Each user has a **bucket** of tokens.
-- Each request **uses one token**.
-- If the bucket is empty → ❌ `429 Too Many Requests`
-- Tokens **refill over time**, based on a fixed rate.
+* Every user has a **bucket**.
+* Each request consumes **1 token**.
+* If tokens are available → ✅ request is allowed.
+* If bucket is empty → ❌ `429 Too Many Requests`.
+* Tokens are **refilled automatically** based on elapsed time.
 
-📦 Example:
-- Rate: `5 tokens/second`
-- Burst: `10 tokens max`
+### 🔢 Example
 
-→ Users can make up to **10 requests instantly**, then refill at 5/second.
+| Config         | Value        |
+| -------------- | ------------ |
+| Rate           | 5 tokens/sec |
+| Burst Capacity | 10 tokens    |
+
+* User can make 10 quick requests → all allowed
+* 11th request → blocked
+* After 2 seconds → 10 tokens restored
 
 ---
 
-## 🗂 Project Structure
+## 🗂️ Folder Structure
 
+```
+Distributed-Rate-Limiter/
+├── cmd/
+│   └── server/           # App entrypoint
+│       └── main.go
+├── internal/
+│   ├── api/              # Gin handlers
+│   │   └── handler.go
+│   └── limiter/          # Token bucket logic
+│       └── limiter.go
+├── go.mod
+├── go.sum
+└── README.md
+```
+
+---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/hsraktu17/Distributed-Rate-Limiter.git
+cd Distributed-Rate-Limiter
+go mod tidy
+go run cmd/server/main.go
+```
+
+---
+
+## 📬 API Usage
+
+### Endpoint:
+
+```
+GET /api/check?user_id=some-user
+```
+
+### Responses:
+
+```json
+// ✅ Request Allowed
+{ "message": "Request Allowed" }
+
+// ❌ Rate Limit Exceeded
+{ "error": "Too Many Requests" }
+```
+
+---
+
+## ⚙️ Customize Limiting Rules
+
+In `handler.go`, change this line:
+
+```go
+l = limiter.NewLimiter(5, 10) // 5 req/sec, burst of 10
+```
+
+To whatever rate/burst you want.
+
+---
+
+## 🧪 Test Locally
+
+Use `curl` or Postman:
+
+```bash
+for i in {1..15}; do
+  curl "http://localhost:8080/api/check?user_id=testuser"
+done
+```
+
+Try hitting it rapidly to trigger `429` responses.
+
+---
+
+## ⏭️ Roadmap
+
+* [ ] Redis-based limiter (shared memory across nodes)
+* [ ] Consistent hashing for sharding
+* [ ] Middleware support
+* [ ] Docker support & deployment
+* [ ] Prometheus metrics
+
+---
+
+## 👨‍💻 Author
+
+**Utkarsh Raj Srivastava**
+Building backend infrastructure with Go & system design.
+
+> Drop a ⭐ if this helped!
