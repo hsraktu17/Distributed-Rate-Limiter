@@ -9,6 +9,7 @@ import (
 
 func main() {
 	r := gin.Default()
+	r.Use(api.RateLimiterMiddleware())
 	r.GET("/api/check", api.RateLimitHandle)
 
 	log.Println("Server is running on port 8080")
