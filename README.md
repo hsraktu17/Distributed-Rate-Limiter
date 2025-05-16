@@ -118,7 +118,7 @@ Try hitting it rapidly to trigger `429` responses.
 
 * [ ] Redis-based limiter (shared memory across nodes)
 * [ ] Consistent hashing for sharding
-* [ ] Middleware support
+* [-] Middleware support
 * [ ] Docker support & deployment
 * [ ] Prometheus metrics
 
