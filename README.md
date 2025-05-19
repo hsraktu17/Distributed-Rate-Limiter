@@ -19,7 +19,7 @@ A production-ready, pluggable token bucket rate limiter written in Go. Built wit
 ## 📦 Installation
 
 ```bash
-go get github.com/hsraktu17/ratelimiter@v0.1.0
+go get github.com/hsraktu17/Distributed-Rate-Limiter@v0.1.0
 ```
 
 ---
