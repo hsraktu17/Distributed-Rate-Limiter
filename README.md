@@ -1,132 +1,88 @@
-# ⚡ Distributed Rate Limiter (Token Bucket) – Golang
+# ⚡ ratelimiter – Token Bucket Rate Limiter for Go
 
-A high-performance, customizable **Token Bucket Rate Limiter** built in Go using the Gin framework. Perfect for protecting APIs from abuse and enforcing fair usage policies.
+&#x20;
 
-This project is built with clean code principles, structured modules, and concurrency-safe logic. Future plans include a Redis backend and cluster-aware support.
+A production-ready, pluggable token bucket rate limiter written in Go. Built with clean abstractions for extensibility and includes drop-in support for the Gin web framework.
 
 ---
 
 ## 🚀 Features
 
-* 🔄 Token Bucket algorithm: allows bursts + controlled refill
-* 👤 Per-user rate limiting (via `user_id`)
-* ⚙️ Configurable rate (tokens/sec) and burst size
-* 🧵 Thread-safe (uses `sync.Mutex`)
-* 🌐 HTTP API built with Gin
-* 🧼 Clean folder structure, easy to extend
-
----
-
-## 🧠 How It Works
-
-* Every user has a **bucket**.
-* Each request consumes **1 token**.
-* If tokens are available → ✅ request is allowed.
-* If bucket is empty → ❌ `429 Too Many Requests`.
-* Tokens are **refilled automatically** based on elapsed time.
-
-### 🔢 Example
-
-| Config         | Value        |
-| -------------- | ------------ |
-| Rate           | 5 tokens/sec |
-| Burst Capacity | 10 tokens    |
-
-* User can make 10 quick requests → all allowed
-* 11th request → blocked
-* After 2 seconds → 10 tokens restored
-
----
-
-## 🗂️ Folder Structure
-
-```
-Distributed-Rate-Limiter/
-├── cmd/
-│   └── server/           # App entrypoint
-│       └── main.go
-├── internal/
-│   ├── api/              # Gin handlers
-│   │   └── handler.go
-│   └── limiter/          # Token bucket logic
-│       └── limiter.go
-├── go.mod
-├── go.sum
-└── README.md
-```
+* Token Bucket algorithm with refill logic
+* Per-user rate limiting support
+* In-memory backend (Redis coming soon)
+* Gin middleware support (`r.Use(...)`)
+* Lightweight, no external dependencies (for memory mode)
 
 ---
 
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/hsraktu17/Distributed-Rate-Limiter.git
-cd Distributed-Rate-Limiter
-go mod tidy
-go run cmd/server/main.go
+go get github.com/hsraktu17/ratelimiter@v0.1.0
 ```
 
 ---
 
-## 📬 API Usage
+## 🧱 Usage
 
-### Endpoint:
-
-```
-GET /api/check?user_id=some-user
-```
-
-### Responses:
-
-```json
-// ✅ Request Allowed
-{ "message": "Request Allowed" }
-
-// ❌ Rate Limit Exceeded
-{ "error": "Too Many Requests" }
-```
-
----
-
-## ⚙️ Customize Limiting Rules
-
-In `handler.go`, change this line:
+### 🧠 Basic Go
 
 ```go
-l = limiter.NewLimiter(5, 10) // 5 req/sec, burst of 10
+import "github.com/hsraktu17/ratelimiter/limiter"
+
+lim := limiter.NewMemoryLimiter(5, 10)
+if lim.Allow("user123") {
+    // process request
+}
 ```
 
-To whatever rate/burst you want.
+### 🌐 Gin Middleware
 
----
+```go
+import (
+    "github.com/hsraktu17/ratelimiter/limiter"
+    "github.com/hsraktu17/ratelimiter/ginratelimiter"
+)
 
-## 🧪 Test Locally
-
-Use `curl` or Postman:
-
-```bash
-for i in {1..15}; do
-  curl "http://localhost:8080/api/check?user_id=testuser"
-done
+r := gin.Default()
+r.Use(ginratelimiter.Middleware(limiter.NewMemoryLimiter(5, 10)))
 ```
 
-Try hitting it rapidly to trigger `429` responses.
+---
+
+## 📂 Project Structure
+
+```
+ratelimiter/
+├── limiter/           # Core Limiter interface + memory implementation
+│   ├── limiter.go     # Limiter interface
+│   └── memory.go      # Memory-backed rate limiter
+├── gin/               # Gin-specific middleware
+│   └── middleware.go
+├── examples/          # Example Gin server
+│   └── main.go
+├── go.mod
+└── README.md
+```
 
 ---
 
-## ⏭️ Roadmap
+## 📈 Roadmap
 
-* [ ] Redis-based limiter (shared memory across nodes)
-* [ ] Consistent hashing for sharding
-* [x] Middleware support
-* [ ] Docker support & deployment
-* [ ] Prometheus metrics
+*
 
 ---
 
-## 👨‍💻 Author
+## 📄 License
+
+This project is licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for details.
+
+---
+
+## 👤 Author
 
 **Utkarsh Raj Srivastava**
-Building backend infrastructure with Go & system design.
+Passionate about backend systems, performance engineering, and product-scale infrastructure.
 
-> Drop a ⭐ if this helped!
+> Drop a ⭐ if this helped. Contributions are welcome!
