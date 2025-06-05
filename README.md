@@ -1,7 +1,5 @@
 # ⚡ ratelimiter – Token Bucket Rate Limiter for Go
 
-&#x20;
-
 A production-ready, pluggable token bucket rate limiter written in Go. Built with clean abstractions for extensibility and includes drop-in support for the Gin web framework.
 
 ---
@@ -29,7 +27,7 @@ go get github.com/hsraktu17/Distributed-Rate-Limiter@v0.1.0
 ### 🧠 Basic Go
 
 ```go
-import "github.com/hsraktu17/ratelimiter/limiter"
+import "github.com/hsraktu17/Distributed-Rate-Limiter/limiter"
 
 lim := limiter.NewMemoryLimiter(5, 10)
 if lim.Allow("user123") {
@@ -41,8 +39,8 @@ if lim.Allow("user123") {
 
 ```go
 import (
-    "github.com/hsraktu17/ratelimiter/limiter"
-    "github.com/hsraktu17/ratelimiter/ginratelimiter"
+    "github.com/hsraktu17/Distributed-Rate-Limiter/limiter"
+    ginratelimiter "github.com/hsraktu17/Distributed-Rate-Limiter/gin"
 )
 
 r := gin.Default()
@@ -54,7 +52,7 @@ r.Use(ginratelimiter.Middleware(limiter.NewMemoryLimiter(5, 10)))
 ## 📂 Project Structure
 
 ```
-ratelimiter/
+Distributed-Rate-Limiter/
 ├── limiter/           # Core Limiter interface + memory implementation
 │   ├── limiter.go     # Limiter interface
 │   └── memory.go      # Memory-backed rate limiter
@@ -70,7 +68,7 @@ ratelimiter/
 
 ## 📈 Roadmap
 
-*
+* Add Redis backend support
 
 ---
 
