@@ -14,6 +14,13 @@ A production-ready, pluggable token bucket rate limiter written in Go. Built wit
 
 ---
 
+## 🔧 Prerequisites
+
+* **Go** 1.24 or newer
+* **Docker** and **docker-compose** for containerized runs
+
+---
+
 ## 📦 Installation
 
 ```bash
@@ -63,6 +70,28 @@ Distributed-Rate-Limiter/
 ├── go.mod
 └── README.md
 ```
+
+---
+
+## ▶️ Running the Example Server
+
+### Local execution
+
+```bash
+go run examples/main.go
+```
+
+Open `http://localhost:8080/ping` in your browser or via curl to test.
+
+### Docker Compose
+
+Build and run the containerized server:
+
+```bash
+docker-compose up --build
+```
+
+The service exposes port **8080** on the host.
 
 ---
 
