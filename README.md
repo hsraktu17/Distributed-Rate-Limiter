@@ -65,7 +65,10 @@ Distributed-Rate-Limiter/
 │   └── memory.go      # Memory-backed rate limiter
 ├── gin/               # Gin-specific middleware
 │   └── middleware.go
-├── examples/          # Example Gin server
+├── cmd/
+│   └── server/        # Example Gin server
+│       └── main.go
+├── examples/          # Legacy example server
 │   └── main.go
 ├── go.mod
 └── README.md
